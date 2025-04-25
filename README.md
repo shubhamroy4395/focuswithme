@@ -1,46 +1,151 @@
-# Getting Started with Create React App
+# Focus With Me
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern Pomodoro timer web application with a clean, minimalist UI inspired by Wonderspace. This app helps users maintain focus and productivity through customizable study sessions with ambient background music.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Elegant, Distraction-Free UI**
+  - Dark mode by default with optional light mode
+  - Clean, minimalist interface
+  - Animated transitions and subtle effects
 
-### `npm start`
+- **Customizable Timer Sessions**
+  - Set focus duration (5-60 minutes)
+  - Set break duration (1-30 minutes)
+  - Configure total study hours (1-4 hours)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Smart Session Management**
+  - Automatic transitions between focus and break periods
+  - Session progress tracking
+  - Option to postpone breaks
+  - "I'm here" confirmation after breaks
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Integrated Focus Music**
+  - Curated selection of lo-fi and study music
+  - YouTube integration for continuous playback
+  - Volume control and mute options
 
-### `npm test`
+- **Visual Feedback**
+  - Progress bar for current session
+  - Pulsing timer indicator when active
+  - Clear indicators for focus/break states
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Minimal & Full Modes**
+  - Switch between minimal timer-only mode
+  - Full interface with music player
+  - Option to hide cursor during focus sessions
 
-### `npm run build`
+## UI/UX Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Glass Morphism Design**
+  - Subtle backdrop blur effects
+  - Semi-transparent containers with border highlights
+  - Depth through strategic shadows
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Animated Components**
+  - Smooth transitions between app states
+  - Subtle hover animations
+  - Loading/progress animations
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Color Psychology**
+  - Dark mode for reduced eye strain
+  - Strategic accent colors for different functions
+  - Primary purple/indigo palette for focus and calm
 
-### `npm run eject`
+- **Accessibility Features**
+  - High contrast text
+  - Clear visual hierarchy
+  - Keyboard navigable interface
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Development Roadmap
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Phase 1: Core Timer Functionality
+- Basic timer implementation with study/break cycles
+- Session tracking and progress visualization
+- Settings panel for duration customization
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Phase 2: YouTube/Vibe Integration
+- Predefined vibe selections
+- YouTube player integration
+- Theme switching based on selected vibe
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Phase 3: User Experience Enhancements
+- Notifications
+- "Lights off" mode
+- Break management (postpone, "I'm here" button)
+- Visual feedback for timer states
 
-## Learn More
+### Phase 4: Persistence & Polish
+- Local storage for user settings
+- Mobile optimization
+- PWA capabilities
+- UI polish and animations
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Tech Stack
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Frontend Framework**: React.js with TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Context API
+- **Media Integration**: YouTube iframe API
+- **Animations**: Framer Motion
+- **Deployment**: Netlify
+
+## Best Practices
+
+- **Performance**
+  - Optimize timer accuracy with timestamp-based calculations
+  - Implement code splitting and lazy loading
+  - Minimize render cycles with proper memoization
+
+- **User Experience**
+  - Accessible design (WCAG AA compliance)
+  - Responsive layout for all device sizes
+  - Graceful error handling
+
+- **Code Quality**
+  - TypeScript for type safety
+  - Component-based architecture
+  - Comprehensive testing suite
+
+## Development Setup
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/focuswithme.git
+cd focuswithme
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server
+```bash
+npm start
+```
+
+4. Build for production
+```bash
+npm run build
+```
+
+## Inspiration
+
+The UI design is inspired by Wonderspace (https://www.wonderspace.app/), a minimal workspace for focused productivity. We've implemented our own take on their elegant, distraction-free aesthetic.
+
+## Deployment
+
+This project is configured for easy deployment to Netlify:
+
+1. Connect your GitHub repository to Netlify
+2. Set the build command to `npm run build`
+3. Set the publish directory to `build`
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

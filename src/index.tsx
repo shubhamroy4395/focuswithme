@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { initAnalytics, trackEvent, EventTypes } from './utils/analytics';
+
+// Initialize analytics
+initAnalytics();
+
+// Track app opened event
+trackEvent(EventTypes.APP_OPENED);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

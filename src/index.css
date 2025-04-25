@@ -1,3 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Colors - Focus Mode */
+    --primary: #4F46E5;      /* Rich indigo for focus actions */
+    --primary-light: #6366F1; /* Lighter indigo for hover states */
+    --primary-dark: #4338CA;  /* Deeper indigo for active states */
+    
+    /* Accent Colors - Break Mode */
+    --accent: #EC4899;       /* Vibrant pink for break actions */
+    --accent-light: #F472B6; /* Lighter pink for hover states */
+    --accent-dark: #DB2777;  /* Deeper pink for active states */
+    
+    /* Background Colors */
+    --bg-base: #FFFFFF;      /* Clean white for main background */
+    --bg-surface: #F9FAFB;   /* Subtle off-white for cards */
+    
+    /* Progress Bar Colors */
+    --focus-track: rgba(76, 143, 243, 0.801);  /* Current focus segment background */
+    --focus-progress: #76da6d;  /* Progress within current focus segment */
+    --focus-completed: #38ca69;  /* Completed focus segments */
+    --focus-future: rgba(76, 143, 243, 0.801);  /* Future focus segments */
+    
+    /* Break colors - updated to orange */
+    --break-track: rgba(255, 135, 49, 0.87);  /* Light orange for break track */
+    --break-progress: #F97316;  /* Current progress in break - orange */
+    --break-completed: #EA580C;  /* Completed break segments - darker orange */
+    --break-future: rgba(249, 116, 22, 0.692);  /* Future break segments - very light orange */
+    
+    /* Add all other variables here */
+    --focus-shadow: rgba(79, 70, 229, 0.6);
+    --break-shadow: rgba(249, 116, 22, 0.938);
+  }
+
+  [data-theme='dark'] {
+    /* Primary Colors - Focus Mode */
+    --primary: #6366F1;      /* Vibrant indigo for focus actions */
+    --primary-light: #818CF8; /* Lighter indigo for hover states */
+    --primary-dark: #4F46E5;  /* Deep indigo for active states */
+    
+    /* Accent Colors - Break Mode */
+    --accent: #EC4899;       /* Vibrant pink for break actions */
+    --accent-light: #F472B6; /* Lighter pink for hover states */
+    --accent-dark: #DB2777;  /* Deeper pink for active states */
+    
+    /* Background Colors */
+    --bg-base: #0F172A;      /* Deep navy for main background */
+    --bg-surface: #1E293B;   /* Lighter navy for cards */
+    
+    /* Progress Bar Colors */
+    --focus-track: rgba(99, 102, 241, 0.2);  /* Transparent indigo for focus track */
+    --focus-progress: #818CF8;  /* Current progress in focus */
+    --focus-completed: #6366F1;  /* Completed focus segments */
+    --focus-future: rgba(99, 102, 241, 0.1);  /* Future focus segments */
+    
+    --break-track: rgba(236, 72, 153, 0.2);  /* Transparent pink for break track */
+    --break-progress: #F472B6;  /* Current progress in break */
+    --break-completed: #EC4899;  /* Completed break segments */
+    --break-future: rgba(236, 72, 153, 0.1);  /* Future break segments */
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +75,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+  
+  .btn-secondary {
+    @apply bg-neutral-lightest text-neutral-dark hover:bg-neutral-light;
+  }
 }

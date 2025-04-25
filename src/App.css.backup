@@ -1,0 +1,507 @@
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Updated color palette with modern indigo theme */
+  --primary: #4F46E5;
+  --primary-dark: #4338CA;
+  --primary-light: #6366F1;
+  --neutral-dark: #0F172A; /* Deep navy background */
+  --neutral: #1E293B;
+  --neutral-light: #94A3B8;
+  --neutral-lightest: #F8FAFC;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --accent: #EC4899; /* Vibrant pink for break mode */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.2);
+  --backdrop-blur: 12px;
+  
+  /* Font variables */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--neutral-dark);
+  color: var(--neutral-lightest);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease;
+  line-height: 1.5;
+}
+
+.hide-cursor * {
+  cursor: none !important;
+}
+
+.minimal-mode {
+  overflow: hidden;
+}
+
+/* App Container */
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  padding-top: 1rem;
+}
+
+/* Animated Background - More subtle gradient inspired by Wonderspace */
+.app-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-dark);
+  z-index: -1;
+}
+
+/* Main Content */
+.app-content {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 1rem;
+  z-index: 1;
+  transition: all 0.5s ease;
+}
+
+.app-content.minimal {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.app-subtitle {
+  font-size: 1.125rem;
+  color: var(--neutral-light);
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* App Main Layout */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  gap: 1.5rem;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .app-main {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .timer-section {
+    flex: 1;
+    max-width: 600px;
+    padding-right: 1rem;
+  }
+  
+  .vibes-section {
+    flex: 1;
+    max-width: 500px;
+  }
+}
+
+/* Add styles for minimized vibes state */
+.app-main.vibes-minimized .timer-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.1));
+  padding: 0 1.5rem;
+}
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.vibes-section {
+  width: 100%;
+}
+
+/* Control buttons - Updated with modern design */
+.app-controls {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 40;
+}
+
+/* Position the minimized FocusVibes component correctly - above the settings button */
+.minimized-vibes-container {
+  position: fixed;
+  bottom: 6rem; /* Further up from the settings button */
+  right: 1.5rem;
+  width: auto;
+  z-index: 40;
+  /* Add a subtle background glow for better visibility */
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.2));
+}
+
+/* Ensure buttons are clearly visible and easy to tap */
+.control-button {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(17, 24, 39, 0.8);
+  color: var(--primary-light);
+  border: 2px solid var(--glass-border);
+  backdrop-filter: blur(var(--backdrop-blur));
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.control-button:hover {
+  background-color: rgba(79, 70, 229, 0.15);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--primary-light);
+}
+
+/* Settings panel - Clean modern design */
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  max-width: 100%;
+  height: 100vh;
+  background-color: rgba(17, 24, 39, 0.92);
+  backdrop-filter: blur(var(--backdrop-blur));
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  padding: 2.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--glass-border);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.settings-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.025em;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--neutral-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Glass effect for components */
+.glass {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--backdrop-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px var(--glass-shadow);
+  border-radius: 1.25rem;
+}
+
+/* Buttons */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Timer circle animation */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.timer-circle {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.float-animation {
+  animation: float 10s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .app-content {
+    padding: 0.5rem;
+  }
+  
+  .app-header {
+    margin-bottom: 1rem;
+  }
+  
+  .app-title {
+    font-size: 2rem;
+  }
+  
+  .app-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.875rem;
+  }
+  
+  .app-controls {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .control-button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+/* Light Mode Styles */
+body.light-mode {
+  --neutral-dark: #F1F5F9;
+  --neutral: #E2E8F0;
+  --neutral-light: #64748B;
+  --neutral-lightest: #0F172A;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  background-color: var(--neutral-dark);
+}
+
+body.light-mode .app-title {
+  color: var(--neutral-lightest);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .app-subtitle {
+  color: var(--neutral-light);
+}
+
+body.light-mode .settings-panel {
+  background-color: rgba(255, 255, 255, 0.95);
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+body.light-mode .settings-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+body.light-mode .settings-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .settings-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+body.light-mode .app-background {
+  background: #F8FAFC;
+}
+
+body.light-mode .glass {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(var(--backdrop-blur));
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .settings-panel {
+  background-color: rgba(255, 255, 255, 0.92);
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .text-neutral-lightest {
+  color: #0F172A;
+}
+
+body.light-mode .text-neutral-light {
+  color: #64748B;
+}
+
+body.light-mode .bg-neutral-20 {
+  background-color: rgba(226, 232, 240, 0.5);
+}
+
+body.light-mode .bg-neutral-30 {
+  background-color: rgba(226, 232, 240, 0.7);
+}
+
+body.light-mode .bg-neutral-40 {
+  background-color: rgba(226, 232, 240, 0.9);
+}
+
+body.light-mode .border-neutral-30 {
+  border-color: rgba(203, 213, 224, 0.7);
+}
+
+body.light-mode .border-neutral-40 {
+  border-color: rgba(203, 213, 224, 0.9);
+}
+
+body.light-mode .border-glass-border {
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Control button light mode styles */
+body.light-mode .control-button {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--primary);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .control-button:hover {
+  background-color: rgba(79, 70, 229, 0.1);
+  color: var(--primary-dark);
+}
+
+/* Control button when music is playing */
+.control-button.bg-primary {
+  background: linear-gradient(45deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+}
+
+.control-button.bg-primary:hover {
+  background: linear-gradient(45deg, var(--primary-light) 0%, var(--primary) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.6);
+}

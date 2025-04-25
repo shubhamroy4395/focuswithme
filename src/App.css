@@ -1,38 +1,901 @@
-.App {
-  text-align: center;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
+  border-radius: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Dark theme (default) colors */
+  --neutral-dark: #000000; /* Black background */
+  --neutral: #1E293B;
+  --neutral-light: #94A3B8;
+  --neutral-lightest: #F8FAFC;
+  --primary: #4F46E5;
+  --primary-dark: #4338CA;
+  --primary-light: #6366F1;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --accent: #EC4899; /* Vibrant pink for break mode */
+  
+  /* UI element colors */
+  --bg-primary: var(--neutral-dark); /* Page background */
+  --bg-secondary: rgba(0, 0, 0, 0.8); /* Card and panel backgrounds */
+  --bg-tertiary: rgba(17, 24, 39, 0.7); /* Control backgrounds */
+  --text-primary: var(--neutral-lightest); /* Main text */
+  --text-secondary: var(--neutral-light); /* Secondary text */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(0, 0, 0, 0.8);
+  --dropdown-bg: rgba(0, 0, 0, 0.95);
+  --dropdown-text: var(--neutral-lightest);
+  
+  /* Glass effect */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.2);
+  --backdrop-blur: 12px;
+  
+  /* Font variables */
+  --font-sans: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-heading: 'Comfortaa', 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+  --font-mono: 'Lexend', monospace;
+  --font-timer: 'Lexend', monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.hide-cursor * {
+  cursor: none !important;
+}
+
+.minimal-mode {
+  overflow: hidden;
+}
+
+/* App Container */
+.app-container {
+  position: relative;
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  padding-top: 0; /* Removed top padding as we now have a top bar */
+}
+
+/* Top Bar - New component */
+.app-top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(var(--backdrop-blur));
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.app-title-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-controls-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Update button styling for the top bar */
+.app-controls-section .control-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(17, 24, 39, 0.7);
+  border: 1px solid var(--glass-border);
+}
+
+/* Active vibe indicator */
+.vibe-active {
+  color: var(--primary);
+  border-color: var(--primary-light);
+  position: relative;
+}
+
+.playing-indicator {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+/* Container for hidden vibes */
+.hidden-vibes-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 40;
+}
+
+/* Animated Background - More subtle gradient inspired by Wonderspace */
+.app-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-primary);
+  z-index: -1;
+}
+
+/* Main Content */
+.app-content {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: 1rem;
+  z-index: 1;
+  transition: all 0.5s ease;
+}
+
+.app-content.minimal {
+  padding: 0;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  height: 100vh;
+}
+
+/* Header */
+.app-header {
+  display: none; /* Hide the old header as we now use the top bar */
+}
+
+.app-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.025em;
+}
+
+.app-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* App Main Layout */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  gap: 1rem;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .app-main {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .timer-section {
+    flex: 3;
+    max-width: none;
+    padding-right: 0;
+  }
+  
+  .vibes-section {
+    flex: 1;
+    max-width: none;
+  }
+}
+
+/* Add styles for minimized vibes state */
+.app-main.vibes-minimized .timer-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.1));
+  padding: 0 1.5rem;
+}
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  transition: all 0.3s ease;
+  min-width: 0; /* Allow flex item to shrink below content size */
+}
+
+.vibes-section {
+  width: 100%;
+  min-width: 0; /* Allow flex item to shrink below content size */
+}
+
+/* Control buttons - Updated with modern design */
+.app-controls {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 40;
+}
+
+/* Ensure buttons are clearly visible and easy to tap */
+.control-button {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-tertiary);
+  color: var(--primary-light);
+  border: 2px solid var(--glass-border);
+  backdrop-filter: blur(var(--backdrop-blur));
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.control-button:hover {
+  background-color: rgba(79, 70, 229, 0.15);
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--primary-light);
+  animation: gentlePulse 2s infinite ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
+/* Settings panel - Clean modern design */
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  max-width: 100%;
+  height: 100vh;
+  background-color: var(--bg-secondary);
+  backdrop-filter: blur(var(--backdrop-blur));
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  padding: 2.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.settings-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--neutral-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Glass effect for components */
+.glass {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--backdrop-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 40px var(--glass-shadow);
+  border-radius: 2rem;
+}
+
+/* Buttons */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: translateY(-10px);
   }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Timer circle animation */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.timer-circle {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.float-animation {
+  animation: float 10s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .app-content {
+    padding: 0.5rem;
+  }
+  
+  .app-title {
+    font-size: 2rem;
+  }
+  
+  .app-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.875rem;
+  }
+  
+  .app-controls {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .control-button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+/* Light Mode Styles - Improved for better readability */
+body.light-mode {
+  /* Light theme colors overrides */
+  --neutral-dark: #F1F5F9;
+  --neutral: #E2E8F0;
+  --neutral-light: #64748B;
+  --neutral-lightest: #0F172A;
+  
+  /* UI element colors for light mode */
+  --bg-primary: #ffffff; /* Page background - pure white */
+  --bg-secondary: rgba(255, 255, 255, 0.97); /* Card and panel backgrounds - more opaque */
+  --bg-tertiary: rgba(241, 245, 249, 0.85); /* Control backgrounds */
+  --text-primary: #0F172A; /* Main text */
+  --text-secondary: #475569; /* Secondary text */
+  --border-color: rgba(0, 0, 0, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --dropdown-bg: #ffffff;
+  --dropdown-text: #0F172A;
+  
+  /* Glass effect for light mode */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .app-title {
+  color: var(--text-primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .app-subtitle {
+  color: var(--text-secondary);
+}
+
+body.light-mode .settings-panel {
+  background-color: var(--bg-secondary);
+  border-left-color: var(--border-color);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .settings-panel .bg-neutral-20,
+body.light-mode .settings-panel .bg-neutral-30,
+body.light-mode .settings-panel .bg-neutral-40,
+body.light-mode .settings-panel [class*="bg-neutral"] {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+body.light-mode .settings-panel .text-neutral-lightest {
+  color: var(--text-primary);
+}
+
+body.light-mode .settings-panel .text-neutral-light {
+  color: var(--text-secondary);
+}
+
+/* Winter theme styles with improved snowfall */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+body.winter-theme {
+  --neutral-dark: #0c1429;
+  --neutral: #1a2a4a;
+  --neutral-light: #8babd8;
+  --neutral-lightest: #f0f9ff;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
+  
+  /* UI element colors for winter theme */
+  --bg-primary: #0c1429;
+  --bg-secondary: rgba(13, 25, 48, 0.9);
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body.winter-theme .app-background {
+  background: linear-gradient(to bottom, #0c1429 0%, #1a2a4a 100%);
+}
+
+/* Animation for continuous snowfall with better distribution */
+@keyframes continuousSnowfall {
+  0% {
+    transform: translate(0, -30px) rotate(0deg);
+    opacity: 0;
+  }
+  2% { /* Faster fade in */
+    opacity: 0.7;
+  }
+  80% { /* Stay visible longer */
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(calc(sin(var(--random-offset, 0deg)) * 100px), 110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Snowflake styling for continuous visibility */
+.snowflake {
+  position: fixed;
+  top: -30px; /* Start further above the viewport */
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.7; /* Higher starting opacity */
+  pointer-events: none;
+  /* Much longer animation duration */
+  animation: continuousSnowfall 30s linear infinite;
+  filter: blur(1px);
+  z-index: 5;
+  will-change: transform, opacity;
+}
+
+/* Create a snow container that stays fixed and covers everything */
+.snow-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+/* Responsive adjustments for the top bar */
+@media (max-width: 768px) {
+  .app-top-bar {
+    padding: 1rem;
+  }
+  
+  .app-title {
+    font-size: 1.5rem;
+  }
+  
+  .app-subtitle {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-top-bar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .app-controls-section {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Apply theme colors to elements */
+body .app-background {
+  background: var(--bg-primary);
+}
+
+body .settings-panel {
+  background-color: var(--bg-secondary);
+  border-left-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body .settings-panel .bg-neutral-20,
+body .settings-panel .bg-neutral-30,
+body .settings-panel .bg-neutral-40 {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+/* Fix for radio and checkbox controls */
+body.light-mode input[type="radio"],
+body.light-mode input[type="checkbox"] {
+  background-color: white;
+}
+
+/* Ensure correct dropdown text colors in both modes */
+body select option {
+  background-color: var(--dropdown-bg);
+  color: var(--dropdown-text);
+}
+
+/* Add general styling rules for common elements */
+body .app-title {
+  color: var(--text-primary);
+}
+
+body .app-subtitle {
+  color: var(--text-secondary);
+}
+
+/* Button styling */
+body .control-button {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--primary-light);
+}
+
+/* Top bar styling */
+body .app-top-bar {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+/* Card styling */
+body .glass {
+  background-color: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+/* Input range styling */
+body input[type="range"] {
+  background-color: var(--bg-tertiary);
+}
+
+/* Border colors */
+body .border-neutral,
+body .border-b.border-neutral {
+  border-color: var(--border-color);
+}
+
+/* Toggle switches */
+body .bg-neutral-40 {
+  background-color: var(--bg-tertiary);
+}
+
+/* Remove all !important declarations - they're not recommended for maintainable CSS */
+body.light-mode .settings-panel {
+  background-color: var(--bg-secondary);
+  border-left-color: var(--border-color);
+}
+
+body.light-mode .settings-panel select {
+  background-color: var(--dropdown-bg);
+  color: var(--dropdown-text);
+  border-color: var(--border-color);
+}
+
+/* Ensure text colors are consistent */
+body.light-mode .app-title,
+body.light-mode .settings-title,
+body.light-mode .settings-panel h3 {
+  color: var(--text-primary);
+}
+
+body.light-mode .app-subtitle,
+body.light-mode .settings-panel label,
+body.light-mode .settings-panel .text-neutral-light {
+  color: var(--text-secondary);
+}
+
+/* About Me modal styling */
+.about-modal {
+  background-color: var(--bg-secondary);
+  backdrop-filter: blur(var(--backdrop-blur));
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 450px;
+  padding: 1.5rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.about-content {
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.about-content p {
+  margin-bottom: 1rem;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.contact-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.contact-link.linkedin {
+  background-color: rgba(10, 102, 194, 0.1);
+  color: #0a66c2;
+  border: 1px solid rgba(10, 102, 194, 0.3);
+}
+
+.contact-link.linkedin:hover {
+  background-color: rgba(10, 102, 194, 0.15);
+}
+
+/* Style for email contact link */
+.contact-link.email {
+  background-color: rgba(234, 88, 12, 0.1);
+  color: #ea580c;
+  border: 1px solid rgba(234, 88, 12, 0.3);
+  justify-content: space-between;
+}
+
+.contact-link.email:hover {
+  background-color: rgba(234, 88, 12, 0.15);
+}
+
+/* Copy button styles */
+.copy-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-button:hover {
+  background-color: rgba(234, 88, 12, 0.2);
+}
+
+.copy-button.copied {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.copy-button.copied::after {
+  content: '✓';
+  position: absolute;
+  font-size: 12px;
+  margin-left: -4px;
+  margin-top: -16px;
+  background-color: #10b981;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 4px;
+  animation: fadeOut 2s forwards;
+}
+
+/* FadeOut animation for copy confirmation */
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+}
+
+/* Timer digit styles */
+.timer-display {
+  font-family: var(--font-timer);
+  letter-spacing: -0.02em;
+  font-feature-settings: "tnum" on, "lnum" on;
+  font-weight: 500;
+}
+
+/* Button text styles */
+button {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  border-radius: 9999px; /* Fully rounded */
+}
+
+/* Link styles */
+a {
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+
+/* Text styles */
+p, span, div {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Add gentle pulsing animation to certain elements */
+@keyframes gentlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.control-button:hover {
+  animation: gentlePulse 2s infinite ease-in-out;
 }
