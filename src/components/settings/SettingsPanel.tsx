@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTimer } from '../../context/TimerContext';
 import { calculateTotalSessions } from '../../utils/timeUtils';
 import { motion } from 'framer-motion';
-import { XMarkIcon, SunIcon, MoonIcon, SparklesIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, MoonIcon, SparklesIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
 
 interface SettingsPanelProps {
   onClose: () => void;

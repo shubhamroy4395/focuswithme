@@ -9,7 +9,6 @@ import {
   SpeakerXMarkIcon,
   PauseIcon,
   PlayIcon,
-  ChevronDownIcon,
   PlusCircleIcon
 } from '@heroicons/react/24/solid';
 
