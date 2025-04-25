@@ -25,7 +25,14 @@ export const setUserId = (userId: string) => {
 
 // Set user properties
 export const setUserProperties = (properties: Record<string, any>) => {
-  amplitude.identify(new amplitude.Identify().setOnce(properties));
+  const identify = new amplitude.Identify();
+  
+  // Apply each property individually
+  Object.entries(properties).forEach(([key, value]) => {
+    identify.setOnce(key, value);
+  });
+  
+  amplitude.identify(identify);
 };
 
 // Common event types for consistent tracking
