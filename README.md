@@ -130,10 +130,6 @@ npm start
 npm run build
 ```
 
-## Inspiration
-
-The UI design is inspired by Wonderspace (https://www.wonderspace.app/), a minimal workspace for focused productivity. We've implemented our own take on their elegant, distraction-free aesthetic.
-
 ## Deployment
 
 This project is configured for easy deployment to Netlify:
