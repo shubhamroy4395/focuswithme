@@ -7,6 +7,10 @@ const DEFAULT_FOCUS_DURATION = 25; // 25 minutes
 const DEFAULT_BREAK_DURATION = 5;  // 5 minutes
 const DEFAULT_TOTAL_HOURS = 1;     // 1 hour
 
+// Add audio variable at the top, outside of components
+const focusEndSound = new Audio('/assets/sounds/focus-end.mpeg');
+const breakEndSound = new Audio('/assets/sounds/break-end.mpeg');
+
 // Initial state
 const initialState: AppState = {
   timer: {
@@ -32,9 +36,6 @@ const initialState: AppState = {
   },
   currentVibe: null
 };
-
-// Add audio variable at the top, outside of components
-const timerEndSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
 
 // Action types
 type ActionType =
@@ -93,7 +94,10 @@ function timerReducer(state: AppState, action: ActionType): AppState {
         
         // Play sound when focus session ends (switching to break)
         if (state.timer.mode === 'focus') {
-          timerEndSound.play().catch(e => console.log('Audio play failed:', e));
+          focusEndSound.play().catch(e => console.log('Audio play failed:', e));
+        } else if (state.timer.mode === 'break') {
+          // Play sound when break ends (switching to focus)
+          breakEndSound.play().catch(e => console.log('Audio play failed:', e));
         }
         
         // Check if we've completed all sessions
